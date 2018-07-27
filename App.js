@@ -1,30 +1,113 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Button, Text, View} from 'react-native';
+
+const AppContext = React.createContext();
+
+class AppProvider extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: 0,
+      reset: () => {
+        this.setState({value: 0});
+      },
+      increase: () => {
+        this.setState({value: this.state.value + 1});
+      },
+      decrease: () => {
+        this.setState({value: this.state.value - 1});
+      }
+    } //state
+  } //constructor
+
+  render() {
+
+    return (
+      <AppContext.Provider value={this.state}>
+        {this.props.children}
+      </AppContext.Provider>
+    ); //return
+
+  } //render
+
+} //AppProvider
 
 export default class App extends Component {
 
   render() {
 
     return (
-      <View style={s.container}>
-        <Text style={s.welcome}>Welcome to React Native!</Text>
-      </View>
-    );//return
+      <AppProvider>
+        <View style={[s.container, {borderColor: 'black',top: 20}]}>
 
-  }//render
+          <AppContext.Consumer>
+            {(context) => {
+              return (
+                <View style={{flex: 1,flexDirection: 'column'}}>
+                  <View style={{flexDirection: 'row',height: 50,borderColor: 'gray',borderWidth: 1,margin: 10}}>
+                    <Text>*{context.value}*</Text>
+                    <Button color="#841584" title="Reset To Default" onPress={context.reset}/>
+                  </View>
+                  <View style={{flex: 1,flexDirection: 'row'}}>
+                    <Right/>
+                    <Left/>
+                  </View>
+                </View>
+              );//return
+            }//context
+            }
+          </AppContext.Consumer>
 
-}//App
+        </View>
+      </AppProvider>
+    ); //return
+
+  } //render
+
+} //App
+
+const Left = () => {
+  return (
+    <View style={[s.container, {borderColor: 'red'}]}>
+      <AppContext.Consumer>
+        {(context) => {
+          return (
+            <View style={{flex: 1}}>
+              <Text>*{context.value}*</Text>
+              <Button color="#841584" title="Increase" onPress={context.increase}/>
+            </View>
+          );//return
+        }//context
+        }
+      </AppContext.Consumer>
+    </View>
+  ); //return
+} // Left
+
+const Right = (props) => {
+  return (
+    <View style={[s.container, {borderColor: 'blue'}]}>
+      <AppContext.Consumer>
+        {(context) => {
+          return (
+            <View style={{flex: 1}}>
+              <Text>*{context.value}*</Text>
+              <Button color="#841584" title="Decrease" onPress={context.decrease}/>
+            </View>
+          ); //return
+        }//context
+        }
+      </AppContext.Consumer>
+    </View>
+  ) //return
+} // Right
 
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10
+    margin: 10,
+    borderWidth: 1
   }
 });
