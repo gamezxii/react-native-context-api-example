@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Button, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
+
+import Btn from './Button.js';
 
 const AppContext = React.createContext();
 
@@ -47,8 +49,8 @@ export default class App extends Component {
               return (
                 <View style={{flex: 1,flexDirection: 'column'}}>
                   <View style={{flexDirection: 'row',height: 50,borderColor: 'gray',borderWidth: 1,margin: 10}}>
-                    <Text>*{context.value}*</Text>
-                    <Button color="#841584" title="Reset To Default" onPress={context.reset}/>
+                    <Text>MAIN COMPONENT : {context.value}</Text>
+                    <Btn color="gray" title="Reset To Default" onPress={context.reset}/>
                   </View>
                   <View style={{flex: 1,flexDirection: 'row'}}>
                     <Right/>
@@ -75,8 +77,8 @@ const Left = () => {
         {(context) => {
           return (
             <View style={{flex: 1}}>
-              <Text>*{context.value}*</Text>
-              <Button color="#841584" title="Increase" onPress={context.increase}/>
+              <Text>LEFT COMP : {context.value}</Text>
+              <Btn color="red" title="Increase" onPress={context.increase}/>
             </View>
           );//return
         }//context
@@ -93,8 +95,8 @@ const Right = (props) => {
         {(context) => {
           return (
             <View style={{flex: 1}}>
-              <Text>*{context.value}*</Text>
-              <Button color="#841584" title="Decrease" onPress={context.decrease}/>
+              <Text> RIGHT COMP : {context.value}</Text>
+              <Btn color="blue" title="Decrease" onPress={context.decrease}/>
             </View>
           ); //return
         }//context
